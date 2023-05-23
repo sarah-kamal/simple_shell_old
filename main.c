@@ -40,7 +40,7 @@ int main(int argc, char *argv[])
 		}
 		else if (command == 0)
 		{
-			putword("\n");
+			/*putword("\n");*/
 			return (1);
 		}
 		for (i = 0; buffer[i] != '\n'; i++)
