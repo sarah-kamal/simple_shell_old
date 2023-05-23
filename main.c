@@ -83,7 +83,7 @@ int main(int argc, char *argv[])
 		else
 		{
 			 wait(NULL);
-			 putword("\n");
+			/* putword("\n");*/
 			 free(buffer);
 			 continue;
 		}
