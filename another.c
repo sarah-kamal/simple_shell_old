@@ -75,11 +75,15 @@ void handle_error(char *fname, int linecount, int n)
 	linec = malloc(sizeof(char) * 3);
 	if (!linec)
 		exit(90);
-	putword(fname);
-	putword(": ");
 	if (n)
 	{
+		putword(fname);
+		putword(": ");
 		tostring(linec, linecount);
 		perror(linec);
+	}
+	else
+	{
+		perror(fname);
 	}
 }
