@@ -14,7 +14,7 @@
 #include <errno.h>
 #include <signal.h>
 int printenv(char *arr);
-char *create_buff();
+int create_buff(char **);
 void sighandler(int sig_num);
 char* customstrtok(char *buff,char );
 void putword(char *word);

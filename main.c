@@ -10,7 +10,8 @@ int main(int argc, char *argv[])
 {
 	int command, id, j, i, numofargs, e, linecount;
 	size_t len;
-	char *words, *buffer, binloc[6];
+	char *words, binloc[6];
+	char *buffer;
 	char *arr[10000];
 	char temp[1000];
 	for (j = 0; j < 10000; j++)
@@ -27,14 +28,16 @@ int main(int argc, char *argv[])
 	while (1)
 	{
 		linecount++;
-		while (numofargs != 0)
+		while (numofargs)
 		{
-			free(arr[numofargs]);
+			free(arr[--numofargs]);
 			arr[numofargs] = NULL;
-			numofargs--;
 		}
 		putword("#cisfun$");
-		buffer = create_buff();
+		/*if (!create_buff(&buffer))
+		{
+			exit(0);
+		}*/
 		command = getline(&buffer, &len, stdin);
 		if (command == -1)
 		{
@@ -50,9 +53,14 @@ int main(int argc, char *argv[])
 		;
 		buffer[i] = '\0';
 		words = customstrtok(buffer, ' ');
+		if (stringcompare(words,"\0") == 0|| stringcompare(words, "") == 0)
+		{
+			continue;
+		}
 		while (words)
 		{
-			arr[numofargs] = create_buff();
+			if (!create_buff(&arr[numofargs]))
+				exit (0);
 			stringcopy(arr[numofargs], words);
 			numofargs++;
 			words = customstrtok(NULL, ' ');
@@ -81,6 +89,7 @@ int main(int argc, char *argv[])
 			if (e == -1)
 			{
 				handle_error(argv[0], linecount, 0);
+				free(buffer);
 			}
 		}
 		else

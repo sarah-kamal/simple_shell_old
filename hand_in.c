@@ -1,16 +1,15 @@
 #include "shell.h"
 
-char *create_buff()
+int create_buff(char **buffer)
 {
-	char *buffer;
-
-	buffer = malloc(sizeof(char) * 1024);
-	if (!buffer)
+	*(buffer) = (char*)malloc(sizeof(char) * 1024);
+	if ((*buffer)== NULL)
 	{
-		free(buffer);
+		free(*buffer);
 		exit(90);
+		return (0);
 	}
-	return (buffer);
+	return (1);
 }
 
 void sighandler(int signum)
