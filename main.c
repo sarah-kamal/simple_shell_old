@@ -54,6 +54,7 @@ int main(int argc, char *argv[])
 			numofargs++;
 			words = customstrtok(NULL, ' ');
 		}
+		exitcode(arr[0], arr[1]);
 		stringcopy(temp, arr[0]);
 		if (temp[0] != '/' && temp[0] != '.')
 		{
@@ -61,7 +62,6 @@ int main(int argc, char *argv[])
 			stringcat(arr[0], temp);
 			stringcat(arr[0], "\0");
 		}
-		exitcode(arr[0], arr[1]);
 		if (printenv(arr[0]))
 			continue;
 		if (!(access(arr[0], R_OK) == 0))
