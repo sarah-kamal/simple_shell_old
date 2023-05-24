@@ -23,27 +23,43 @@
 	else
 		return (0);
  }
-
 /**
- * customgetline - Reads a line of text from a file stream or stdin
- * @lineptr: Pointer to the buffer that will hold the line
- * @n: Pointer to the size of the buffer
- * @stream: The file stream to read from (or stdin if NULL)
+ * custom_getline - Reads a line from input stream
+ * @line: Pointer to the line buffer
+ * @max_len: Maximum length of the line buffer
+ * @stream: Input stream to read from
  *
- * Return:
- *    - The number of characters read (excluding newline)
- *    - -1 if an error occurs or end of file is reached
- 
- ssize_t customgetline(char **buff, int n, FILE *stream)
- {
-	 int counter;
+ * Return: Number of characters read, or -1 on failure
+ */
+ssize_t custom_getline(char **line, size_t max_len, FILE *stream)
+{
+	size_t i;
+	int c;
+	char *new_line;
+    if (line == NULL || max_len == 0 || stream == NULL)
+        return -1;
+    *line = malloc(max_len);
+    if (*line == NULL)
+        return -1;
 
-	 counter = read(STDIN_FILENO, *buff, n - 1);
-	 if (counter < n - 1)
-	 {
-		 *buff[n-1] = "\0";
-	 }
- }*/
+    while ((c = fgetc(stream)) != EOF && c != '\n') {
+        (*line)[i++] = (char)c;
+
+        if (i == max_len - 1) {
+            max_len *= 2;
+            new_line = realloc(*line, max_len);
+            if (new_line == NULL) {
+                free(*line);
+                return -1;
+            }
+            *line = new_line;
+        }
+    }
+
+    (*line)[i] = '\0';
+
+    return (i);
+}
 
 void tostring(char str[], int num)
 {

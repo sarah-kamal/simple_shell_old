@@ -9,6 +9,7 @@ extern char **environ;
 int main(int argc, char *argv[])
 {
 	int command, id, j, i, numofargs, e, linecount;
+	size_t len;
 	char *words, *buffer, binloc[6];
 	char *arr[10000];
 	char temp[1000];
@@ -17,6 +18,7 @@ int main(int argc, char *argv[])
 	if (argc > 1)
 		return (1);
 	linecount = 0;
+	len = 0;
 	numofargs = 0;
 	words = NULL;
 	signal(SIGINT, SIG_DFL);
@@ -27,21 +29,22 @@ int main(int argc, char *argv[])
 		linecount++;
 		while (numofargs != 0)
 		{
+			free(arr[numofargs]);
 			arr[numofargs] = NULL;
 			numofargs--;
 		}
 		putword("#cisfun$");
 		buffer = create_buff();
-		command = read(STDIN_FILENO, buffer, 1024);
+		command = getline(&buffer, &len, stdin);
 		if (command == -1)
 		{
 			putword("Failure to read");
-			exit(91);
+			exit(0);
 		}
 		else if (command == 0)
 		{
 			/*putword("\n");*/
-			return (1);
+			continue;
 		}
 		for (i = 0; buffer[i] != '\n'; i++)
 		;
