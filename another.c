@@ -1,4 +1,4 @@
-#include"main.h"
+#include"shell.h"
 /**
  * printEnvironment - Prints the current environment variables
  * @arr: array[0]
