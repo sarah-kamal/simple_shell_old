@@ -53,6 +53,11 @@ int main(int argc, char *argv[])
 			buffer = NULL;
 			/*putword("\n");*/
 			return 0;
+		}
+		else if (command == -2)
+		{
+			free(buffer);
+			buffer = NULL;
 			continue;
 		}
 		words = customstrtok(buffer, ' ');

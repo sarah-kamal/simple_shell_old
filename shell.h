@@ -18,6 +18,7 @@ int create_buff(char **);
 void sighandler(int sig_num);
 char* customstrtok(char *buff,char );
 void putword(char *word);
+int custom_fgetc(FILE *stream);
 void stringcopy(char *dest, const char *src);
 ssize_t custom_getline(char **lineptr, size_t *n, FILE *stream);
 void stringcat(char *dest, const char *src);
