@@ -34,8 +34,6 @@ int main(int argc, char *argv[])
 			free(arr[--numofargs]);
 			arr[numofargs] = NULL;
 		}
-		printf("lol\n");
-		fflush(stdout);
 		putword("#cisfun$");
 		if (!create_buff(&buffer))
 		{
@@ -54,20 +52,12 @@ int main(int argc, char *argv[])
 			free(buffer);
 			buffer = NULL;
 			/*putword("\n");*/
+			return 0;
 			continue;
 		}
-		printf("prefor\n %s", buffer);
-		fflush(stdout);
-		/*for (i = 0; buffer[i] != '\n'; i++)
-		;*/
-		printf("postfor\n");
-		fflush(stdout);
-		/*buffer[i] = '\0';*/
 		words = customstrtok(buffer, ' ');
 		if (stringcompare(words,"\0") == 0|| stringcompare(words, "") == 0)
 		{
-			printf("first strtok\n");
-			fflush(stdout);
 			free(buffer);
 			buffer = NULL;
 			continue;
@@ -76,8 +66,6 @@ int main(int argc, char *argv[])
 		{
 			if (!create_buff(&(arr[numofargs])))
 			{
-				printf("is it here !!!\n");
-				fflush(stdout);
 				exit(0);
 			}
 			stringcopy(arr[numofargs], words);
