@@ -19,7 +19,7 @@ void sighandler(int sig_num);
 char* customstrtok(char *buff,char );
 void putword(char *word);
 void stringcopy(char *dest, const char *src);
-ssize_t custom_getline(char **line, size_t max_len, FILE *stream);
+ssize_t custom_getline(char **lineptr, size_t *n, FILE *stream);
 void stringcat(char *dest, const char *src);
 int stringcompare(const char *str1, const char *str2);
 int exitcode(char *arr, char *code);

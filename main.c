@@ -8,7 +8,7 @@ extern char **environ;
  */
 int main(int argc, char *argv[])
 {
-	int command, id, j, i, numofargs, e, linecount;
+	int command, id, j, numofargs, e, linecount;
 	size_t len;
 	char *words, binloc[6];
 	char *buffer;
@@ -19,7 +19,8 @@ int main(int argc, char *argv[])
 	if (argc > 1)
 		return (1);
 	linecount = 0;
-	len = 0;
+	(void)len;
+	len = 1024;
 	numofargs = 0;
 	words = NULL;
 	signal(SIGINT, SIG_DFL);
@@ -33,34 +34,52 @@ int main(int argc, char *argv[])
 			free(arr[--numofargs]);
 			arr[numofargs] = NULL;
 		}
+		printf("lol\n");
+		fflush(stdout);
 		putword("#cisfun$");
-		/*if (!create_buff(&buffer))
+		if (!create_buff(&buffer))
 		{
 			exit(0);
-		}*/
-		command = getline(&buffer, &len, stdin);
+		}
+		command = custom_getline(&buffer, &len, stdin);
 		if (command == -1)
 		{
 			putword("Failure to read");
+			free(buffer);
+			buffer = NULL;
 			exit(0);
 		}
 		else if (command == 0)
 		{
+			free(buffer);
+			buffer = NULL;
 			/*putword("\n");*/
 			continue;
 		}
-		for (i = 0; buffer[i] != '\n'; i++)
-		;
-		buffer[i] = '\0';
+		printf("prefor\n %s", buffer);
+		fflush(stdout);
+		/*for (i = 0; buffer[i] != '\n'; i++)
+		;*/
+		printf("postfor\n");
+		fflush(stdout);
+		/*buffer[i] = '\0';*/
 		words = customstrtok(buffer, ' ');
 		if (stringcompare(words,"\0") == 0|| stringcompare(words, "") == 0)
 		{
+			printf("first strtok\n");
+			fflush(stdout);
+			free(buffer);
+			buffer = NULL;
 			continue;
 		}
 		while (words)
 		{
-			if (!create_buff(&arr[numofargs]))
-				exit (0);
+			if (!create_buff(&(arr[numofargs])))
+			{
+				printf("is it here !!!\n");
+				fflush(stdout);
+				exit(0);
+			}
 			stringcopy(arr[numofargs], words);
 			numofargs++;
 			words = customstrtok(NULL, ' ');
@@ -74,10 +93,14 @@ int main(int argc, char *argv[])
 			stringcat(arr[0], "\0");
 		}
 		if (printenv(arr[0]))
+		{
+			free(buffer);
 			continue;
+		}
 		if (!(access(arr[0], R_OK) == 0))
 		{
 			handle_error(argv[0], linecount, 0);
+			free(buffer);
 			continue;
 		}
 		id = fork();
@@ -90,7 +113,10 @@ int main(int argc, char *argv[])
 			{
 				handle_error(argv[0], linecount, 0);
 				free(buffer);
+				return (0);
 			}
+			free(buffer);
+			return (0);
 		}
 		else
 		{

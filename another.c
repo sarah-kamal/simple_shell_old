@@ -31,34 +31,44 @@
  *
  * Return: Number of characters read, or -1 on failure
  */
-ssize_t custom_getline(char **line, size_t max_len, FILE *stream)
+ /**
+ * custom_getline - Read a line from a file stream.
+ * @lineptr: Pointer to the buffer where the line will be stored.
+ * @n: Pointer to the size of the buffer.
+ * @stream: File stream to read from.
+ *
+ * Return: Number of characters read, or -1 on failure.
+ */
+ssize_t custom_getline(char **lineptr, size_t *n, FILE *stream)
 {
-	size_t i;
-	int c;
-	char *new_line;
-    if (line == NULL || max_len == 0 || stream == NULL)
-        return -1;
-    *line = malloc(max_len);
-    if (*line == NULL)
-        return -1;
+	size_t capacity = 0;
+	size_t bytesRead = 0;
+	int character;
+	char *newLineptr;
 
-    while ((c = fgetc(stream)) != EOF && c != '\n') {
-        (*line)[i++] = (char)c;
+	if (lineptr == NULL || n == NULL || stream == NULL)
+		return -1;
 
-        if (i == max_len - 1) {
-            max_len *= 2;
-            new_line = realloc(*line, max_len);
-            if (new_line == NULL) {
-                free(*line);
-                return -1;
-            }
-            *line = new_line;
-        }
-    }
+	while ((character = getc(stream)) != EOF && character != '\n')
+	{
+		if (bytesRead >= capacity - 1)
+		{
+			capacity = capacity == 0 ? 1 : capacity * 2;
+			newLineptr = realloc(*lineptr, capacity);
+			if (newLineptr == NULL)
+				return -1;
+			*lineptr = newLineptr;
+			*n = capacity;
+		}
+		(*lineptr)[bytesRead++] = character;
+	}
 
-    (*line)[i] = '\0';
+	if (bytesRead == 0 && character == EOF)
+		return -1;
 
-    return (i);
+	(*lineptr)[bytesRead] = '\0';
+
+	return bytesRead;
 }
 
 void tostring(char str[], int num)
